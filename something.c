@@ -1,10 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-struct node //node declaration
+struct node //node declaration for BST
 {
     int data;
-    struct node *next;
+    struct node *left;
+    struct node *right;
 };
 
 struct node* createnode(int data)
@@ -12,73 +13,81 @@ struct node* createnode(int data)
     struct node *a;
     a=(struct node*)malloc(sizeof(struct node));
     a->data=data;
-    a->next=NULL;
+    a->left=NULL;
+    a->right=NULL;
     return a;
 }
-struct node* insertbegin(struct node *start,int add)    //function that returns pointer to node.(adding at start)
-{
-    struct node *t;
-    t=(struct node*)malloc(sizeof(struct node));
-    t->data=add;
-    t->next=start;
-    start=t;    //start stores value of temp (pointer)
-    return start;
-
-}
-
-struct node* insertend(struct node *start,int d)
-{
-
-    struct node *p;
-    struct node *temp; //node to be added to list in heap memory.
-    temp=(struct node*)malloc(sizeof(struct node));
-
-    p=start;
-    while(p->next!=NULL)    // iterate to the last.
+struct node* goleft(struct node *root,int add)
     {
-        p=p->next;
-    }
-    temp->next=NULL;
-    temp->data=d;
-    p->next=temp;
-    return start;
-}
+        if(root==NULL)
+        {   struct node* temp;
+            temp = createnode(add);
 
-void traverse(struct node* start)
-{
-    struct node *p;
-    p=start;
-    while(p!=NULL)
+            return temp;
+        }
+        else
+        {
+            insert(root->left);
+            return root->left;
+        }
+    }
+
+struct node* goright(struct node *root, int add)
     {
-        printf("%d\n",p->data);
-        p=p->next;
+        if(root==NULL)
+        {   struct node* temp;
+            temp = createnode(add);
+
+            return temp;
+        }
+        else
+            {
+                insert(root->right);
+                return root->right;
+            }
     }
-}
-struct node* deleteatstart(struct node* start)
+
+
+void insert(struct node *root,int add)    //function that returns pointer to node.(adding at start)
 {
-    struct node* temp;
-    temp=start->next;
-    free(start);
-    return temp;
+    if(add > root->data)
+        root->right = goright(root->right,add);
+    if(add < root->data)
+        root->left=goleft(root->left,add);
+
+//    if(root==NULL)
+//    struct node *t;
+//    t=(struct node*)malloc(sizeof(struct node));
+//    t=createnode(add);
+//    start=t;    //start stores value of temp (pointer)
+//    return start;
+
 }
-struct node* deleteatend(struct node* start)
-{
-    struct node* p;
-    if (start == NULL)
-        return start;
-    p=start;
-    while (p->next->next != NULL)
-        p=p->next;
-    p->next=NULL;
-    return start;
-    }
+//struct node* insertend(struct node *start,int d)
+//{
+//
+//    struct node *p;
+//    struct node *temp; //node to be added to list in heap memory.
+//    temp=(struct node*)malloc(sizeof(struct node));
+//
+//    p=start;
+//    while(p->next!=NULL)    // iterate to the last.
+//    {
+//        p=p->next;
+//    }
+//    temp->next=NULL;
+//    temp->data=d;
+//    p->next=temp;
+//    return start;
+//}
+//
+
 int main()
 {   struct node* start;
     start=createnode(10);
-    start = insertbegin(start,1);
-    start = insertend(start,2);
-    start = deleteatend(start);
-    traverse(start);
+    insert(start,1);
+    insert(start,15);
+    printf("%d",start->right->data);
 
     return 0;
 }
