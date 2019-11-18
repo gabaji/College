@@ -21,14 +21,19 @@ struct node* createnode()
 }
 struct node* push(struct node *start,int add)    //function that returns pointer to node.(adding at start)
 {
+
     struct node *t;
     t=(struct node*)malloc(sizeof(struct node));
     t->data=add;
+    if(start==NULL)
+    {
+        t->next=NULL;
+        return t;
+    }
     t->next=start;
     start=t;
     //start stores value of temp (pointer)
     printf("%d pushed!\n",add);
-    traverse(start);
     return start;
 }
 struct node* pop(struct node* start)
@@ -37,14 +42,13 @@ struct node* pop(struct node* start)
     temp=start->next;
     printf("%d popped!\n",start->data);
     free(start);
-    traverse(temp);
     return temp;
 }
-void traverse(struct node* start)
+void display(struct node* start)
 {
     struct node *p;
     p=start;
-    printf("New linked list :- ");
+    printf("Stack :- ");
     while(p!=NULL)
     {
         printf("%d ",p->data);
@@ -52,15 +56,49 @@ void traverse(struct node* start)
     }
     printf("\n");
 }
+int x,choice;
+struct node* start = NULL;
 int main()
 {
-    printf("Stack implementation using linked list\n\n");
-    struct node* a;
-    a=createnode(10);
-    a=push(a,20);
-    a=push(a,30);
-    a=push(a,40);
-    a=pop(a);
-    a=pop(a);
+    printf("\n\t STACK OPERATIONS USING LINKED LIST");
+    printf("\n\t--------------------------------");
+    printf("\n\t 1.PUSH\n\t 2.POP\n\t 3.DISPLAY\n\t 4.EXIT");
+    do
+    {
+        printf("\n Enter the Choice:");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+            {
+                printf(" Enter a value to be pushed:");
+                scanf("%d",&x);
+                start=push(start,x);
+                break;
+            }
+            case 2:
+            {
+                start=pop(start);
+                break;
+            }
+            case 3:
+            {
+                display(start);
+                break;
+            }
+            case 4:
+            {
+                printf("\n\t EXIT POINT ");
+                break;
+            }
+            default:
+            {
+                printf ("\n\t Please Enter a Valid Choice(1/2/3/4)");
+            }
+
+        }
+    }
+    while(choice!=4);
     return 0;
 }
+
